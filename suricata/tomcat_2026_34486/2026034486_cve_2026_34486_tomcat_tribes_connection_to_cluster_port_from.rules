@@ -1,0 +1,11 @@
+alert tcp any any -> $HOME_NET 4000 ( \
+  msg:"CVE-2026-34486 Tomcat Tribes - Connection to Cluster Port from Non-Member"; \
+  flow:to_server,established; \
+  content:"FLT2002"; depth:7; \
+  classtype:attempted-admin; \
+  sid:2026034486; rev:1; \
+  metadata:cve CVE-2026-34486, attack_target web_server, \
+           mitre_tactic initial_access, mitre_technique T1190; \
+  reference:cve,2026-34486; \
+)
+

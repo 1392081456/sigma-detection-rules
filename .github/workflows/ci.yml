@@ -1,0 +1,40 @@
+name: ci
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  lint:
+    name: Lint Sigma + Suricata rules
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: pip install pyyaml
+
+      - name: Lint Sigma rules
+        run: python scripts/lint_sigma.py
+
+      - name: Lint Suricata signatures
+        run: python scripts/lint_suricata.py
+
+      - name: Summarize
+        if: always()
+        run: |
+          echo "### Detection ruleset stats" >> "$GITHUB_STEP_SUMMARY"
+          echo "" >> "$GITHUB_STEP_SUMMARY"
+          echo "| Type | Count |" >> "$GITHUB_STEP_SUMMARY"
+          echo "|---|---|" >> "$GITHUB_STEP_SUMMARY"
+          echo "| Sigma rules | $(find rules -name '*.yml' | wc -l) |" >> "$GITHUB_STEP_SUMMARY"
+          echo "| Suricata signatures | $(find suricata -name '*.rules' | wc -l) |" >> "$GITHUB_STEP_SUMMARY"
+          echo "| CVE coverage | $(find rules -mindepth 1 -maxdepth 1 -type d | wc -l) |" >> "$GITHUB_STEP_SUMMARY"

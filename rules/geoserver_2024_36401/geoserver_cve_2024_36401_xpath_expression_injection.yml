@@ -1,0 +1,21 @@
+# Sigma rule — GeoServer XPath RCE
+title: GeoServer CVE-2024-36401 XPath Expression Injection
+logsource:
+  category: webserver
+  product: any
+detection:
+  selection:
+    cs-uri-stem|contains: '/geoserver/'
+  keywords_url:
+    cs-uri-query|contains:
+      - 'exec(java.lang'
+      - 'Runtime.getRuntime'
+      - 'getRuntime()'
+      - 'ProcessBuilder'
+  keywords_body:
+    cs-body|contains:
+      - 'exec(java.lang'
+      - 'Runtime.getRuntime'
+      - 'valueReference>exec'
+  condition: selection and (keywords_url or keywords_body)
+  level: critical

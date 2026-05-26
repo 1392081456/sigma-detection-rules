@@ -1,0 +1,17 @@
+# Sigma rule — FreeMarker SSTI in JimuReport
+title: JimuReport CVE-2023-4450 FreeMarker SSTI
+logsource:
+  category: webserver
+  product: any
+detection:
+  selection:
+    cs-uri-stem|contains: '/jmreport/queryFieldBySql'
+    cs-method: 'POST'
+  keywords:
+    cs-body|contains:
+      - 'freemarker.template.utility.Execute'
+      - '?new()'
+      - '<#assign'
+      - 'ObjectConstructor'
+  condition: selection and keywords
+  level: critical

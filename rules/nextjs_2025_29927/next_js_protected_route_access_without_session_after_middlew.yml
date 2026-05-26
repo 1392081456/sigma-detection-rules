@@ -1,0 +1,30 @@
+title: Next.js Protected Route Access Without Session After Middleware Bypass
+id: 7c3e9a12-4f8b-4d2e-a1c6-9b5d7e2f8a02
+status: experimental
+description: >
+  Detects successful access (HTTP 200) to protected routes without a valid
+  session cookie, indicating possible middleware bypass exploitation.
+references:
+  - https://nvd.nist.gov/vuln/detail/CVE-2025-29927
+author: Security Lab
+date: 2025/03/25
+tags:
+  - attack.initial_access
+  - attack.t1190
+  - cve.2025.29927
+logsource:
+  category: webserver
+  service: access
+detection:
+  selection:
+    cs_uri_path|startswith:
+      - '/dashboard'
+      - '/admin'
+      - '/api/admin'
+    sc_status: 200
+  filter_session:
+    cs_cookie|contains: 'next-auth.session-token'
+  condition: selection and not filter_session
+falsepositives:
+  - Public routes that do not require authentication
+level: high

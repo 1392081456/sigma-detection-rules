@@ -1,0 +1,12 @@
+alert http $HOME_NET any -> $HOME_NET any (
+    msg: "CVE-2026-25887 Chartbrew MongoDB Dataset Query RCE";
+    flow: to_server, established;
+    http.method; content: "POST"; nocase;
+    http.uri; content: "/api/v1/projects/"; nocase;
+    http.uri; content: "dataset"; nocase;
+    http.request_body; content: "require('child_process')"; nocase;
+    http.request_body; content: "execSync"; nocase;
+    reference: cve,2026.25887;
+    classtype: attempted-admin;
+    sid: 2026025887; rev: 1;
+)

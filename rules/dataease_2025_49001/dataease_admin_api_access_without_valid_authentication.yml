@@ -1,0 +1,33 @@
+title: DataEase Admin API Access Without Valid Authentication
+id: 8d4f1a23-5e9c-4b3f-b2d7-0c6e8f3a9b13
+status: experimental
+description: >
+  Detects access to DataEase admin endpoints that return non-401 status codes
+  when the DE-GATEWAY-FLAG header indicates a signature verification failure.
+references:
+  - https://nvd.nist.gov/vuln/detail/CVE-2025-49001
+author: Security Lab
+date: 2025/06/01
+tags:
+  - attack.initial_access
+  - attack.t1190
+  - cve.2025.49001
+logsource:
+  category: webserver
+  service: access
+detection:
+  selection:
+    cs_uri_path|contains:
+      - '/de2api/user/'
+      - '/de2api/datasource/'
+      - '/de2api/panel/'
+      - '/de2api/dataset/'
+    sc_status:
+      - 400
+      - 200
+  filter_legitimate:
+    sc_status: 401
+  condition: selection and not filter_legitimate
+falsepositives:
+  - Normal authenticated admin operations
+level: high

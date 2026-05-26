@@ -1,0 +1,18 @@
+# Sigma rule — Metabase JDBC injection attempt
+title: Metabase CVE-2023-38646 JDBC Injection
+logsource:
+  category: webserver
+  product: any
+detection:
+  selection:
+    cs-uri-stem: '/api/setup/validate'
+    cs-method: 'POST'
+  keywords:
+    cs-body|contains:
+      - 'INIT='
+      - 'CSVWRITE'
+      - 'CREATE TRIGGER'
+      - 'CREATE ALIAS'
+      - 'RUNSCRIPT'
+  condition: selection and keywords
+  level: critical

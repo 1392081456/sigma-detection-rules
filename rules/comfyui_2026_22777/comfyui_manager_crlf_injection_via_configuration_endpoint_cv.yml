@@ -1,0 +1,35 @@
+title: ComfyUI-Manager CRLF Injection via Configuration Endpoint (CVE-2026-22777)
+id: 9e5f2b34-6a0d-4c4g-c3e8-1d7f9g4b0c23
+status: experimental
+description: >
+  Detects CRLF injection attempts against ComfyUI-Manager configuration
+  endpoints. The %0D or %0A in query parameters indicates an attempt to
+  inject new key-value pairs into config.ini.
+references:
+  - https://nvd.nist.gov/vuln/detail/CVE-2026-22777
+  - https://github.com/Comfy-Org/ComfyUI-Manager/security/advisories/GHSA-562r-8445-54r2
+author: Security Lab
+date: 2026/01/20
+modified: 2026/05/21
+tags:
+  - attack.initial_access
+  - attack.t1190
+  - attack.defense_evasion
+  - attack.t1562.001
+  - cve.2026.22777
+logsource:
+  category: webserver
+  service: access
+detection:
+  selection_endpoint:
+    cs_uri_path|startswith: '/api/manager/'
+  selection_crlf:
+    cs_uri_query|contains:
+      - '%0D'
+      - '%0A'
+      - '%0d'
+      - '%0a'
+  condition: selection_endpoint and selection_crlf
+falsepositives:
+  - Legitimate URL-encoded content in manager API parameters (very unlikely)
+level: critical

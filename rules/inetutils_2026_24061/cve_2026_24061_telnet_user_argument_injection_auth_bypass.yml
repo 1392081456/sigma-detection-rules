@@ -1,0 +1,13 @@
+title: CVE-2026-24061 Telnet USER Argument Injection Auth Bypass
+id: 8a3d7f12-6b4c-4e1f-9c20-d5a8b3f1e67c
+status: experimental
+logsource:
+  product: linux
+  service: auth
+detection:
+  selection:
+    process.commandline|contains|all: ['login','-f']
+    process.parent.name: 'telnetd'
+  condition: selection
+tags: [attack.t1190, attack.initial_access, attack.t1078.001, cve.2026.24061]
+level: critical

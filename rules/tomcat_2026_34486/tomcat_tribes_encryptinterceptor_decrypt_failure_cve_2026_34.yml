@@ -1,0 +1,25 @@
+title: Tomcat Tribes EncryptInterceptor Decrypt Failure (CVE-2026-34486 Exploitation Indicator)
+id: af6g3c45-7b1e-5d5h-d4f9-2e8g0h5c1d35
+status: experimental
+description: >
+  Detects "Failed to decrypt message" log entries from Tomcat's
+  EncryptInterceptor, which indicate an attacker sent unencrypted data
+  to the Tribes port — the bypass allows this data to be deserialized.
+references:
+  - https://www.herodevs.com/vulnerability-directory/cve-2026-34486
+author: Security Lab
+date: 2026/04/15
+tags:
+  - attack.execution
+  - attack.t1059
+  - cve.2026.34486
+logsource:
+  product: tomcat
+  service: catalina
+detection:
+  selection:
+    message|contains: 'Failed to decrypt message'
+  condition: selection
+falsepositives:
+  - Network corruption causing legitimate cluster messages to fail decryption
+level: high

@@ -1,0 +1,11 @@
+alert http any any -> $HOME_NET any ( \
+  msg:"CVE-2025-29927 Next.js Middleware Bypass - src/middleware variant"; \
+  flow:to_server,established; \
+  http.header.names; content:"x-middleware-subrequest"; nocase; \
+  http.header; content:"src/middleware"; content:"src/middleware"; distance:0; \
+  classtype:web-application-attack; \
+  sid:2025029928; rev:1; \
+  metadata:cve CVE-2025-29927, attack_target web_server, \
+           mitre_tactic initial_access, mitre_technique T1190; \
+  reference:cve,2025-29927; \
+)

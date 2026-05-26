@@ -1,0 +1,26 @@
+title: ComfyUI-Manager Security Level Downgrade Attempt
+id: 9e5f2b34-6a0d-4c4g-c3e8-1d7f9g4b0c24
+status: experimental
+description: >
+  Detects attempts to inject security_level=weak into ComfyUI-Manager
+  configuration via any endpoint. This is the specific exploitation goal
+  of CVE-2026-22777.
+references:
+  - https://nvd.nist.gov/vuln/detail/CVE-2026-22777
+author: Security Lab
+date: 2026/01/20
+tags:
+  - attack.defense_evasion
+  - attack.t1562.001
+  - cve.2026.22777
+logsource:
+  category: webserver
+  service: access
+detection:
+  selection:
+    cs_uri_query|contains: 'security_level'
+    cs_uri_path|startswith: '/api/manager/'
+  condition: selection
+falsepositives:
+  - None expected — security_level should never appear in query parameters
+level: critical

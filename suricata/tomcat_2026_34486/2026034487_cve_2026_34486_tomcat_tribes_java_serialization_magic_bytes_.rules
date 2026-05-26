@@ -1,0 +1,11 @@
+alert tcp any any -> $HOME_NET 4000 ( \
+  msg:"CVE-2026-34486 Tomcat Tribes - Java Serialization Magic Bytes in Tribes Frame"; \
+  flow:to_server,established; \
+  content:"FLT2002"; depth:7; \
+  content:"|AC ED 00 05|"; \
+  classtype:web-application-attack; \
+  sid:2026034487; rev:1; \
+  metadata:cve CVE-2026-34486, attack_target web_server, \
+           mitre_tactic execution, mitre_technique T1059; \
+  reference:cve,2026-34486; \
+)

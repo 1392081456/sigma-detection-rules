@@ -1,0 +1,28 @@
+title: Next.js Middleware Authorization Bypass via x-middleware-subrequest
+id: 7c3e9a12-4f8b-4d2e-a1c6-9b5d7e2f8a01
+status: experimental
+description: >
+  Detects attempts to bypass Next.js middleware authentication by injecting
+  the internal x-middleware-subrequest header with repeated middleware names.
+references:
+  - https://nvd.nist.gov/vuln/detail/CVE-2025-29927
+  - https://github.com/advisories/GHSA-f82v-jwr5-mffw
+author: Security Lab
+date: 2025/03/25
+modified: 2026/05/21
+tags:
+  - attack.initial_access
+  - attack.t1190
+  - cve.2025.29927
+logsource:
+  category: webserver
+  service: access
+detection:
+  selection_header:
+    cs_header_names|contains: 'x-middleware-subrequest'
+  selection_value:
+    cs_header_value|contains: 'middleware:middleware'
+  condition: selection_header and selection_value
+falsepositives:
+  - Internal Next.js subrequests if logged (should not appear from external IPs)
+level: critical

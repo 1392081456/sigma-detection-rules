@@ -1,0 +1,26 @@
+title: Suspicious Modification of SSH authorized_keys
+id: a7b9c1d3-6e8f-0a2b-4c5d-7e9f1a3b5c7d
+status: stable
+level: high
+description: >
+  Detects modification of SSH authorized_keys files by processes other than
+  SSH or known management tools, indicating potential Redis key injection.
+author: Security Lab
+date: 2026/05/21
+tags:
+  - attack.persistence
+  - attack.t1098.004
+logsource:
+  category: file_event
+  product: linux
+detection:
+  selection:
+    TargetFilename|endswith: '/authorized_keys'
+  filter_legitimate:
+    Image|endswith:
+      - '/sshd'
+      - '/ssh-keygen'
+      - '/ansible'
+  condition: selection and not filter_legitimate
+falsepositives:
+  - Automated key management systems (Puppet, Chef, Ansible)

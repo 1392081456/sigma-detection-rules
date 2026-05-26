@@ -1,0 +1,12 @@
+alert http $HOME_NET any -> $HOME_NET any (
+    msg: "CVE-2026-34197 ActiveMQ Jolokia addNetworkConnector RCE";
+    flow: to_server, established;
+    http.method; content: "POST"; nocase;
+    http.uri; content: "/api/jolokia"; nocase;
+    http.request_body; content: "addNetworkConnector"; nocase;
+    http.request_body; content: "brokerConfig"; nocase;
+    http.request_body; content: "xbean"; nocase;
+    reference: cve,2026.34197;
+    classtype: attempted-admin;
+    sid: 2026034197; rev: 1;
+)

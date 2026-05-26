@@ -1,0 +1,17 @@
+# Sigma rule — Nexus path traversal
+title: Nexus CVE-2024-4956 Path Traversal
+logsource:
+  category: webserver
+  product: any
+detection:
+  selection:
+    cs-uri-stem|contains:
+      - '%2F%2F'
+      - '%2f%2f'
+      - '..%2F'
+      - '..%2f'
+    c-ip|not: '127.0.0.1'
+  filter:
+    cs-uri-stem|contains: '/repository/'
+  condition: selection
+  level: high

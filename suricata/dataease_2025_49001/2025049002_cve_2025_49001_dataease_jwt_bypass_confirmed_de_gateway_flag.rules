@@ -1,0 +1,11 @@
+alert http $HOME_NET any -> any any ( \
+  msg:"CVE-2025-49001 DataEase JWT Bypass Confirmed - DE-GATEWAY-FLAG SignatureVerification"; \
+  flow:to_client,established; \
+  http.header; content:"DE-GATEWAY-FLAG"; content:"Signature"; distance:0; \
+  http.stat_code; content:"400"; \
+  classtype:web-application-attack; \
+  sid:2025049002; rev:1; \
+  metadata:cve CVE-2025-49001, attack_target web_server, \
+           mitre_tactic initial_access, mitre_technique T1190; \
+  reference:cve,2025-49001; \
+)

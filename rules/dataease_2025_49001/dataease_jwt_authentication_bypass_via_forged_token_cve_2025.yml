@@ -1,0 +1,33 @@
+title: DataEase JWT Authentication Bypass via Forged Token (CVE-2025-49001)
+id: 8d4f1a23-5e9c-4b3f-b2d7-0c6e8f3a9b12
+status: experimental
+description: >
+  Detects attempts to bypass DataEase authentication by sending a forged JWT
+  with an invalid signature. The DE-GATEWAY-FLAG response header containing
+  SignatureVerificationException indicates the bypass was triggered.
+references:
+  - https://nvd.nist.gov/vuln/detail/CVE-2025-49001
+  - https://github.com/dataease/dataease/security/advisories/GHSA-xx2m-gmwg-mf3r
+author: Security Lab
+date: 2025/06/01
+modified: 2026/05/21
+tags:
+  - attack.initial_access
+  - attack.t1190
+  - attack.privilege_escalation
+  - attack.t1548
+  - cve.2025.49001
+logsource:
+  category: webserver
+  service: access
+detection:
+  selection_endpoint:
+    cs_uri_path|startswith: '/de2api/'
+  selection_header:
+    cs_header_names|contains: 'X-DE-TOKEN'
+  selection_response:
+    sc_header_value|contains: 'SignatureVerificationException'
+  condition: selection_endpoint and selection_header and selection_response
+falsepositives:
+  - Legitimate users with expired or corrupted tokens (would still show 401, not 400)
+level: critical

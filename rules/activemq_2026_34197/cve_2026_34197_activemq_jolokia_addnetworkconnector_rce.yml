@@ -1,0 +1,15 @@
+title: CVE-2026-34197 ActiveMQ Jolokia addNetworkConnector RCE
+id: c72f3a0d-8f91-4e2c-9b35-a1e6f3c9d8b4
+status: experimental
+logsource:
+  category: webserver
+  service: activemq
+detection:
+  selection_method:
+    cs-method: POST
+    cs-uri-query|contains: '/api/jolokia'
+  selection_body:
+    cs-body|contains|all: ['addNetworkConnector','brokerConfig','xbean']
+  condition: selection_method and selection_body
+tags: [attack.t1190, attack.execution, cve.2026.34197]
+level: critical

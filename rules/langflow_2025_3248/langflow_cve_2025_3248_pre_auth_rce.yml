@@ -1,0 +1,17 @@
+# Sigma rule — Langflow code validation RCE
+title: Langflow CVE-2025-3248 Pre-Auth RCE
+logsource:
+  category: webserver
+detection:
+  selection:
+    cs-uri-stem: '/api/v1/validate/code'
+    cs-method: 'POST'
+  keywords:
+    cs-body|contains:
+      - '__import__'
+      - 'subprocess'
+      - '@exec'
+      - 'check_output'
+      - 'os.system'
+  condition: selection and keywords
+  level: critical

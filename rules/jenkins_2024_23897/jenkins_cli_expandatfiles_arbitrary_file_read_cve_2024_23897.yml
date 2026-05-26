@@ -1,0 +1,24 @@
+title: Jenkins CLI expandAtFiles Arbitrary File Read (CVE-2024-23897)
+id: a1b2c3d4-5e6f-7890-abcd-ef0123456789
+status: experimental
+description: Detects Jenkins CLI exploitation via @filename argument expansion
+references:
+  - https://nvd.nist.gov/vuln/detail/CVE-2024-23897
+  - https://www.jenkins.io/security/advisory/2024-01-24/
+logsource:
+  category: webserver
+detection:
+  selection_cli:
+    cs-uri-stem|startswith: '/cli'
+  selection_payload:
+    cs-uri-query|contains: '@'
+  selection_unauth:
+    cs-username: '-'
+  condition: selection_cli and (selection_payload or selection_unauth)
+falsepositives:
+  - Legitimate CLI usage from CI/CD agents (whitelist by source IP)
+level: high
+tags:
+  - attack.discovery
+  - attack.t1083
+  - cve.2024.23897

@@ -1,0 +1,35 @@
+title: ZeroShell kerbynet Unauthenticated Command Injection (CVE-2019-12725)
+id: 5f9e7a14-3c2b-4d8e-b1a9-7e2c0d8f4a91
+status: experimental
+references:
+  - https://nvd.nist.gov/vuln/detail/CVE-2019-12725
+  - https://www.exploit-db.com/exploits/49096
+author: colorfulwhitez
+date: 2026-05-23
+tags:
+  - attack.initial_access
+  - attack.t1190
+  - attack.execution
+  - attack.t1059.004
+  - attack.privilege_escalation
+  - attack.t1548.003
+  - cve.2019.12725
+logsource:
+  category: webserver
+detection:
+  selection_uri:
+    cs-uri-stem|contains: '/cgi-bin/kerbynet'
+  selection_no_auth:
+    cs-uri-query|contains: 'Section=NoAuthREQ'
+  selection_injection:
+    cs-uri-query|contains:
+      - '%0A'
+      - '%27%0A'
+      - 'tar%20'
+      - 'checkpoint-action'
+      - 'bash%20-i'
+      - 'nc%20-e'
+  condition: selection_uri and selection_no_auth and selection_injection
+falsepositives:
+  - Legitimate admin sessions never use NoAuthREQ — always carry STk token
+level: critical

@@ -1,0 +1,12 @@
+alert http any any -> $HOME_NET any ( \
+  msg:"CVE-2026-22777 ComfyUI-Manager Security Level Downgrade via CRLF"; \
+  flow:to_server,established; \
+  http.uri; content:"/api/manager/"; \
+  http.uri; content:"security_level"; nocase; \
+  classtype:web-application-attack; \
+  sid:2026022778; rev:1; \
+  metadata:cve CVE-2026-22777, attack_target web_server, \
+           mitre_tactic defense_evasion, mitre_technique T1562.001; \
+  reference:cve,2026-22777; \
+)
+

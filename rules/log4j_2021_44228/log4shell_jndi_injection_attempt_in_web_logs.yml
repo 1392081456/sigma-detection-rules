@@ -1,0 +1,38 @@
+title: Log4Shell JNDI Injection Attempt in Web Logs
+id: a]f3b8e1-7c2d-4f5a-9b1e-3d4c6e8f0a2b
+status: stable
+level: critical
+description: >
+  Detects Log4Shell (CVE-2021-44228) exploitation attempts by matching
+  JNDI lookup patterns in web server access logs, including obfuscated variants.
+references:
+  - https://nvd.nist.gov/vuln/detail/CVE-2021-44228
+  - https://logging.apache.org/log4j/2.x/security.html
+author: Security Lab
+date: 2026/05/21
+tags:
+  - attack.initial_access
+  - attack.t1190
+  - attack.execution
+  - attack.t1059.004
+  - cve.2021.44228
+logsource:
+  category: webserver
+  product: apache
+detection:
+  selection_jndi:
+    cs-uri-query|contains:
+      - '${jndi:'
+      - '%24%7Bjndi:'
+      - '${${lower:j}ndi:'
+      - '${${::-j}${::-n}${::-d}${::-i}:'
+  selection_headers:
+    cs-User-Agent|contains:
+      - '${jndi:'
+      - '%24%7Bjndi:'
+    cs-Referer|contains:
+      - '${jndi:'
+  condition: selection_jndi or selection_headers
+falsepositives:
+  - Security scanners testing for Log4Shell
+  - Legitimate use of JNDI in query strings (extremely rare)

@@ -1,0 +1,28 @@
+title: Redis Unauthorized CONFIG SET Command for File Write
+id: f6a8b0c2-5d7e-9f1a-3b4c-6d8e0f2a4b6c
+status: stable
+level: critical
+description: >
+  Detects Redis CONFIG SET commands that change the dump directory or filename,
+  indicating potential unauthorized file write exploitation.
+references:
+  - https://book.hacktricks.xyz/network-services-pentesting/6379-pentesting-redis
+author: Security Lab
+date: 2026/05/21
+tags:
+  - attack.initial_access
+  - attack.t1190
+  - attack.persistence
+  - attack.t1098.004
+logsource:
+  category: network_connection
+  product: redis
+detection:
+  selection:
+    dst_port: 6379
+    payload|contains:
+      - 'CONFIG SET dir'
+      - 'CONFIG SET dbfilename'
+  condition: selection
+falsepositives:
+  - Legitimate Redis administration (should be from known admin IPs only)

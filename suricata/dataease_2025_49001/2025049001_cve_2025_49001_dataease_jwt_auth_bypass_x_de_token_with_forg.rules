@@ -1,0 +1,12 @@
+alert http any any -> $HOME_NET any ( \
+  msg:"CVE-2025-49001 DataEase JWT Auth Bypass - X-DE-TOKEN with Forged JWT"; \
+  flow:to_server,established; \
+  http.header.names; content:"X-DE-TOKEN"; nocase; \
+  http.uri; content:"/de2api/"; \
+  classtype:web-application-attack; \
+  sid:2025049001; rev:1; \
+  metadata:cve CVE-2025-49001, attack_target web_server, \
+           mitre_tactic initial_access, mitre_technique T1190; \
+  reference:cve,2025-49001; \
+)
+

@@ -1,0 +1,13 @@
+title: CVE-2026-25887 Chartbrew Function() Injection RCE
+id: 6d1a2f8e-9c4d-4b3f-85a1-c7f2d4e9b03a
+status: experimental
+logsource:
+  category: application
+  service: chartbrew
+detection:
+  selection:
+    cs-uri-query|contains: '/api/v1/projects/'
+    cs-body|contains|all: ['require(','child_process','execSync']
+  condition: selection
+tags: [attack.t1059.007, attack.execution, cve.2026.25887]
+level: critical

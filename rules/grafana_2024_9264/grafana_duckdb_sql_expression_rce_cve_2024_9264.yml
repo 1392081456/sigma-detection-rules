@@ -1,0 +1,27 @@
+title: Grafana DuckDB SQL Expression RCE (CVE-2024-9264)
+id: e9d8c7b6-a5b4-c3d2-e1f0-9876543210ab
+status: experimental
+description: Detects Grafana SQL Expressions API abuse via DuckDB shellfs/read_blob
+references:
+  - https://nvd.nist.gov/vuln/detail/CVE-2024-9264
+  - https://grafana.com/security/security-advisories/cve-2024-9264/
+logsource:
+  category: webserver
+detection:
+  selection_path:
+    cs-uri-stem: '/api/ds/query'
+    cs-method: 'POST'
+  selection_payload:
+    cs-body|contains:
+      - 'INSTALL shellfs'
+      - 'LOAD shellfs'
+      - 'read_blob'
+      - 'read_csv('
+  condition: selection_path and selection_payload
+falsepositives:
+  - Internal automation using DuckDB SQL expressions (rare; whitelist by user)
+level: critical
+tags:
+  - attack.execution
+  - attack.t1190
+  - cve.2024.9264

@@ -1,0 +1,30 @@
+title: ActiveMQ JVM Spawns Shell — OpenWire RCE (CVE-2023-46604)
+id: c4e5b1a2-2f0d-4d4a-8d6e-2d3c4a5b6c7d
+status: experimental
+description: Detects ActiveMQ JVM spawning shell or download utilities, indicative of CVE-2023-46604 ClassPathXmlApplicationContext exploitation
+references:
+  - https://nvd.nist.gov/vuln/detail/CVE-2023-46604
+  - https://activemq.apache.org/news/cve-2023-46604
+logsource:
+  category: process_creation
+  product: linux
+detection:
+  selection:
+    ParentImage|endswith:
+      - '/java'
+    ParentCommandLine|contains: 'activemq'
+    Image|endswith:
+      - '/bash'
+      - '/sh'
+      - '/curl'
+      - '/wget'
+      - '/python3'
+      - '/nc'
+  condition: selection
+falsepositives:
+  - Custom ActiveMQ administrative scripts (rare; whitelist by hash)
+level: critical
+tags:
+  - attack.execution
+  - attack.t1059
+  - cve.2023.46604
