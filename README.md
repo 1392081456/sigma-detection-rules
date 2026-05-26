@@ -6,6 +6,7 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 ![Sigma rules](https://img.shields.io/badge/Sigma_rules-30-blue)
 ![Suricata signatures](https://img.shields.io/badge/Suricata_signatures-24-blue)
+![Hunting queries](https://img.shields.io/badge/Hunting_queries-6_CVEs_×_3_SIEMs-blue)
 ![CVE coverage](https://img.shields.io/badge/CVE_coverage-23-blue)
 
 ## What this is
@@ -18,6 +19,7 @@ The repository ships:
 |---|---|
 | [`rules/`](rules/) | 30 Sigma YAML rules, grouped by CVE directory |
 | [`suricata/`](suricata/) | 24 Suricata signatures (`.rules` files), grouped by CVE directory |
+| [`hunting/`](hunting/) | **Threat-hunting queries** for 6 representative CVEs in 3 SIEM dialects (Splunk SPL / Sentinel KQL / Elastic ES\|QL), each with a post-hunt pivot |
 | [`scripts/extract_rules.py`](scripts/extract_rules.py) | Pulls rules out of the upstream [`ctf-notes/labs/*/writeup_en.md`](https://github.com/1392081456/ctf-notes/tree/main/labs) writeups so the tree is regenerable |
 | [`scripts/lint_sigma.py`](scripts/lint_sigma.py) | Structural lint for Sigma YAML — required fields, parseable, has a `detection.condition` |
 | [`scripts/lint_suricata.py`](scripts/lint_suricata.py) | Structural lint for Suricata — `sid` / `msg` / balanced parens / classtype |
