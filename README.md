@@ -93,6 +93,16 @@ Every rule in this repository was authored against a **locally-hosted, vendor-pa
 
 See the companion blog post: [From CVE Advisory to Sigma Rule in 30 Minutes](https://1392081456.github.io/2026/05/26/cve-to-sigma-30min/) — describes the four-step workflow (Reproduce → Sigma → Suricata → SIEM hunt) that produced every rule here.
 
+## Upstream contributions
+
+Rules from this repository are gradually being upstreamed to the [SigmaHQ/sigma](https://github.com/SigmaHQ/sigma) reference set:
+
+| Date | Upstream PR | CVE | Status |
+|---|---|---|---|
+| 2026-05-27 | [SigmaHQ/sigma#6032](https://github.com/SigmaHQ/sigma/pull/6032) | CVE-2024-36401 — GeoServer OGC Filter evaluation | Open, awaiting maintainer review |
+
+The upstream YAML is polished against SigmaHQ's stricter schema (full `references` list, mandatory `falsepositives`, `cve.*` / `detection.emerging-threats` tags, `experimental` status) and may differ stylistically from the locally-tracked version under [`rules/`](rules/) here. The detection logic is preserved.
+
 ## Author
 
 Maintained by Colorful White ([@1392081456](https://github.com/1392081456)) — independent defensive-security researcher at Guangdong University of Technology. Academic record at [DOI: 10.3778/j.issn.1002-8331.2311-0227](https://doi.org/10.3778/j.issn.1002-8331.2311-0227). CTFtime: [@colorfulwhitez](https://ctftime.org/user/261101) (team APWN).
